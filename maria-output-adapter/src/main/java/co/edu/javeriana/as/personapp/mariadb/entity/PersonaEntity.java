@@ -18,7 +18,7 @@ import javax.persistence.NamedQuery;
  * @author aasanchez
  */
 @Entity
-@Table(name="persona", catalog = "persona_db", schema = "")
+@Table(name = "persona", catalog = "persona_db", schema = "")
 @NamedQueries({ @NamedQuery(name = "PersonaEntity.findAll", query = "SELECT p FROM PersonaEntity p"),
 		@NamedQuery(name = "PersonaEntity.findByCc", query = "SELECT p FROM PersonaEntity p WHERE p.cc = :cc"),
 		@NamedQuery(name = "PersonaEntity.findByNombre", query = "SELECT p FROM PersonaEntity p WHERE p.nombre = :nombre"),
@@ -139,7 +139,8 @@ public class PersonaEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PersonaEntity [cc=" + cc + ", nombre=" + nombre + ", apellido=" + apellido + ", genero=" + genero + ", edad="
+		return "PersonaEntity [cc=" + cc + ", nombre=" + nombre + ", apellido=" + apellido + ", genero=" + genero
+				+ ", edad="
 				+ edad + "]";
 	}
 

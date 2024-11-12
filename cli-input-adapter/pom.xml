@@ -1,74 +1,118 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>co.edu.javeriana.as</groupId>
-		<artifactId>personapp-hexa-spring-boot</artifactId>
-		<version>${revision}</version>
-	</parent>
-	<groupId>co.edu.javeriana.as.personapp</groupId>
-	<artifactId>cli-input-adapter</artifactId>
-	<name>PersonAPP CLI Input Adapter</name>
-	<description>CLI Input Adapter for PersonAPP</description>
-	<properties>
-		<javax.xml.bind.JAXBContextFactory>
-			com.sun.xml.bind.v2.runtime.JAXBContextImpl$FastBoot</javax.xml.bind.JAXBContextFactory>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>co.edu.javeriana.as.personapp</groupId>
-			<artifactId>application</artifactId>
-			<version>${revision}</version>
-		</dependency>
-		<dependency>
-			<groupId>co.edu.javeriana.as.personapp</groupId>
-			<artifactId>maria-output-adapter</artifactId>
-			<version>${revision}</version>
-		</dependency>
-		<dependency>
-			<groupId>co.edu.javeriana.as.personapp</groupId>
-			<artifactId>mongo-output-adapter</artifactId>
-			<version>${revision}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<version>${global.springframework.boot.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
-		</dependency>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-core</artifactId>
-			<version>2.3.0.1</version>
-		</dependency>
+    <parent>
+        <groupId>co.edu.javeriana.as</groupId>
+        <artifactId>personapp-hexa-spring-boot</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<version>2.3.0.1</version>
-		</dependency>
-	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${global.springframework.boot.version}</version>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <groupId>co.edu.javeriana.as.personapp</groupId>
+    <artifactId>cli-input-adapter</artifactId>
+    <name>PersonAPP CLI Input Adapter</name>
+    <description>CLI Input Adapter for PersonAPP</description>
+
+    <properties>
+        <javax.xml.bind.JAXBContextFactory>com.sun.xml.bind.v2.runtime.JAXBContextImpl$FastBoot</javax.xml.bind.JAXBContextFactory>
+    </properties>
+
+    <dependencies>
+        <!-- Dependencias internas -->
+        <dependency>
+            <groupId>co.edu.javeriana.as.personapp</groupId>
+            <artifactId>application</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>co.edu.javeriana.as.personapp</groupId>
+            <artifactId>maria-output-adapter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>co.edu.javeriana.as.personapp</groupId>
+            <artifactId>mongo-output-adapter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${global.springframework.boot.version}</version>
+        </dependency>
+
+        <!-- JAXB -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.4.0-b180830.0359</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>4.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>4.0.5</version>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- SLF4J -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.32</version> <!-- Versión estable -->
+        </dependency>
+
+        <!-- Logback -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.6</version> <!-- Versión estable -->
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${global.springframework.boot.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.30</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

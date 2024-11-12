@@ -12,30 +12,56 @@ import lombok.NonNull;
 @Mapper
 public class TelefonoMapperMongo {
 
-	@Autowired
-	private PersonaMapperMongo personaMapperMongo;
+    @Autowired
+    private PersonaMapperMongo personaMapperMongo;
 
-	public TelefonoDocument fromDomainToAdapter(Phone phone) {
-		TelefonoDocument telefonoDocument = new TelefonoDocument();
-		telefonoDocument.setId(phone.getNumber());
-		telefonoDocument.setOper(phone.getCompany());
-		telefonoDocument.setPrimaryDuenio(validateDuenio(phone.getOwner()));
-		return telefonoDocument;
-	}
+    public TelefonoDocument fromDomainToAdapter(Phone phone) {
+        if (phone == null) {
+            throw new IllegalArgumentException("El objeto 'Phone' no puede ser nulo.");
+        }
 
-	private PersonaDocument validateDuenio(@NonNull Person owner) {
-		return owner != null ? personaMapperMongo.fromDomainToAdapter(owner) : new PersonaDocument();
-	}
+        TelefonoDocument telefonoDocument = new TelefonoDocument();
+        if (phone.getNumber() == null || phone.getNumber().isEmpty()) {
+            throw new IllegalArgumentException("El campo 'number' no puede ser nulo o vacío en el objeto Phone.");
+        }
+        telefonoDocument.setNum(phone.getNumber()); // Usar num para el número de teléfono
+        telefonoDocument.setOper(phone.getCompany());
+        telefonoDocument.setDuenio(validateDuenio(phone.getOwner())); // Relacionar correctamente con el dueño
 
-	public Phone fromAdapterToDomain(TelefonoDocument telefonoDocument) {
-		Phone phone = new Phone();
-		phone.setNumber(telefonoDocument.getId());
-		phone.setCompany(telefonoDocument.getOper());
-		phone.setOwner(validateOwner(telefonoDocument.getPrimaryDuenio()));
-		return phone;
-	}
+        return telefonoDocument;
+    }
 
-	private @NonNull Person validateOwner(PersonaDocument duenio) {
-		return duenio != null ? personaMapperMongo.fromAdapterToDomain(duenio) : new Person();
-	}
+    private PersonaDocument validateDuenio(Person owner) {
+        if (owner != null && owner.getIdentification() != null) {
+            return personaMapperMongo.fromDomainToAdapter(owner);
+        }
+        return null;
+    }
+
+    public Phone fromAdapterToDomain(TelefonoDocument telefonoDocument) {
+        if (telefonoDocument == null) {
+            throw new IllegalArgumentException("El documento 'TelefonoDocument' no puede ser nulo.");
+        }
+
+        Phone phone = new Phone();
+        if (telefonoDocument.getNum() == null) {
+            throw new IllegalArgumentException("El campo 'num' no puede ser nulo en TelefonoDocument.");
+        }
+        phone.setNumber(telefonoDocument.getNum()); // Usar num para el número de teléfono
+        phone.setCompany(telefonoDocument.getOper());
+
+        Person owner = validateOwner(telefonoDocument.getDuenio());
+        if (owner != null) {
+            phone.setOwner(owner); // Solo asignar si owner no es null
+        }
+
+        return phone;
+    }
+
+    private Person validateOwner(PersonaDocument duenio) {
+        if (duenio == null || duenio.getId() == null) {
+            return null; // Devolver null si el dueño no está presente o no tiene identificación
+        }
+        return personaMapperMongo.fromAdapterToDomain(duenio);
+    }
 }

@@ -18,9 +18,10 @@ public class EstudiosDocument {
 	@Id
 	private String id;
 	@DocumentReference(lazy = true)
-	private PersonaDocument primaryPersona;
+	private PersonaDocument cc_per;
 	@DocumentReference(lazy = true)
-	private ProfesionDocument primaryProfesion;
+	private ProfesionDocument id_prof;
 	private LocalDate fecha;
 	private String univer;
 }
+

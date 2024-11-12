@@ -42,7 +42,7 @@ public class ProfesionMapperMaria {
 		profession.setIdentification(profesionEntity.getId());
 		profession.setName(profesionEntity.getNom());
 		profession.setDescription(validateDescription(profesionEntity.getDes()));
-		profession.setStudies(validateStudies(profesionEntity.getEstudios()));
+		//profession.setStudies(validateStudies(profesionEntity.getEstudios()));
 		return profession;
 	}
 

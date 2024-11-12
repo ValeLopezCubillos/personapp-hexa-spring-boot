@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.javeriana.as.personapp.mariadb.entity.PersonaEntity;
 
-public interface PersonaRepositoryMaria extends JpaRepository<PersonaEntity, Integer>{
+@Repository
+public interface PersonaRepositoryMaria extends JpaRepository<PersonaEntity, Integer> {
 
 }

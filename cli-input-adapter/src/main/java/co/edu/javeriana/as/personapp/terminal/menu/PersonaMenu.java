@@ -16,6 +16,9 @@ public class PersonaMenu {
 
 	private static final int OPCION_REGRESAR_MOTOR_PERSISTENCIA = 0;
 	private static final int OPCION_VER_TODO = 1;
+	private static final int OPCION_CREAR = 2;
+	private static final int OPCION_ELIMINAR = 3;
+	private static final int OPCION_EDITAR_PERSONA = 4;
 	// mas opciones
 
 	public void iniciarMenu(PersonaInputAdapterCli personaInputAdapterCli, Scanner keyboard) {
@@ -58,6 +61,17 @@ public class PersonaMenu {
 				case OPCION_VER_TODO:
 					personaInputAdapterCli.historial();					
 					break;
+				case OPCION_CREAR:
+                    personaInputAdapterCli.crearPersona(); // Llama al método de crear persona
+                    break;
+				case OPCION_ELIMINAR:
+                    System.out.print("Ingrese el DNI de la persona a eliminar: ");
+                    Integer dni = keyboard.nextInt(); // Leer el DNI como un Integer
+                    personaInputAdapterCli.eliminarPersona(dni); // Llama al método de eliminación
+                    break;
+				case OPCION_EDITAR_PERSONA: // Opción para editar persona
+                    personaInputAdapterCli.editarPersona();
+                    break;
 				// mas opciones
 				default:
 					log.warn("La opción elegida no es válida.");
@@ -71,6 +85,9 @@ public class PersonaMenu {
 	private void mostrarMenuOpciones() {
 		System.out.println("----------------------");
 		System.out.println(OPCION_VER_TODO + " para ver todas las personas");
+		System.out.println(OPCION_CREAR + " para crear una nueva persona");
+		System.out.println(OPCION_ELIMINAR + " para eliminar una persona"); 
+		System.out.println(OPCION_EDITAR_PERSONA + " para editar una persona");
 		// implementar otras opciones
 		System.out.println(OPCION_REGRESAR_MOTOR_PERSISTENCIA + " para regresar");
 	}

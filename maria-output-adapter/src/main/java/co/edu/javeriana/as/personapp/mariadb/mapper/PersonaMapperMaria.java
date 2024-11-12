@@ -37,7 +37,11 @@ public class PersonaMapperMaria {
 		return personaEntity;
 	}
 
-	private Character validateGenero(@NonNull Gender gender) {
+	private Character validateGenero(Gender gender) {
+		if (gender == null) {
+			// Manejo explícito del caso nulo, podrías lanzar una excepción si es necesario.
+			throw new IllegalArgumentException("El campo 'gender' no puede ser nulo");
+		}
 		return gender == Gender.FEMALE ? 'F' : gender == Gender.MALE ? 'M' : ' ';
 	}
 
@@ -47,7 +51,8 @@ public class PersonaMapperMaria {
 
 	private List<EstudiosEntity> validateEstudios(List<Study> studies) {
 		return studies != null && !studies.isEmpty()
-				? studies.stream().map(study -> estudiosMapperMaria.fromDomainToAdapter(study)).collect(Collectors.toList())
+				? studies.stream().map(study -> estudiosMapperMaria.fromDomainToAdapter(study))
+						.collect(Collectors.toList())
 				: new ArrayList<EstudiosEntity>();
 	}
 
@@ -64,8 +69,11 @@ public class PersonaMapperMaria {
 		person.setLastName(personaEntity.getApellido());
 		person.setGender(validateGender(personaEntity.getGenero()));
 		person.setAge(validateAge(personaEntity.getEdad()));
-		person.setStudies(validateStudies(personaEntity.getEstudios()));
-		person.setPhoneNumbers(validatePhones(personaEntity.getTelefonos()));
+	
+		// Asignamos estudios sin ciclo recursivo
+		//person.setStudies(validateStudies(personaEntity.getEstudios()));
+		//person.setPhoneNumbers(validatePhones(personaEntity.getTelefonos()));
+	
 		return person;
 	}
 
@@ -78,9 +86,11 @@ public class PersonaMapperMaria {
 	}
 
 	private List<Study> validateStudies(List<EstudiosEntity> estudiosEntity) {
-		return estudiosEntity != null && !estudiosEntity.isEmpty() ? estudiosEntity.stream()
-				.map(estudio -> estudiosMapperMaria.fromAdapterToDomain(estudio)).collect(Collectors.toList())
-				: new ArrayList<Study>();
+		return estudiosEntity != null && !estudiosEntity.isEmpty()
+				? estudiosEntity.stream()
+					.map(estudio -> estudiosMapperMaria.fromAdapterToDomain(estudio)) // Conversión básica
+					.collect(Collectors.toList())
+				: new ArrayList<>();
 	}
 
 	private List<Phone> validatePhones(List<TelefonoEntity> telefonoEntities) {

@@ -1,0 +1,61 @@
+services:
+  rest-service:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Ruta al Dockerfile multietapa
+    ports:
+      - "3000:3000"  # Mapeo del puerto al definido en `application.properties`
+    depends_on:
+      - maria-db
+      - mongo-db
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://persona_db:persona_db@mongo-db:27017/persona_db
+      SPRING_DATASOURCE_URL: jdbc:mariadb://maria-db:3307/persona_db
+      SPRING_DATASOURCE_USERNAME: persona_db
+      SPRING_DATASOURCE_PASSWORD: persona_db
+      APP_DEBUG_LEVEL: INFO
+    networks:
+      - app_network
+    restart: on-failure
+
+  # Servicio MongoDB
+  mongo-db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_DATABASE: persona_db
+    volumes:
+      - mongo_data:/data/db
+      - ./persona_ddl_mongo.js:/docker-entrypoint-initdb.d/persona_ddl_mongo.js
+      - ./persona_dml_mongo.js:/docker-entrypoint-initdb.d/persona_dml_mongo.js
+    networks:
+      - app_network
+
+
+  # Servicio MariaDB
+  maria-db:
+    image: mariadb:latest
+    ports:
+      - "3307:3307"
+    environment:
+      MYSQL_ROOT_PASSWORD: persona_db
+      MYSQL_DATABASE: persona_db
+    volumes:
+      - maria_data:/var/lib/mysql
+      - ./persona_ddl_maria.sql:/docker-entrypoint-initdb.d/ddl.sql
+      - ./persona_dml_maria.sql:/docker-entrypoint-initdb.d/dml.sql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+    command: ['--port=3307']
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  maria_data:
